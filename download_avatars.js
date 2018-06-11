@@ -4,9 +4,15 @@ var fs = require('fs');
 
 console.log("\nHey there!\n\nWelcome to the GitHub Avatar Downloader!\n")
 
-function getRepoContributors(repoOwner, repoName, cb){
+function getRepoContributors(cb){
 
-  var options ={
+  var repoOwner = process.argv[2];
+  var repoName = process.argv[3];
+  if(repoOwner == undefined || repoName == undefined){
+    return console.log("You gotta follow the rules man... please ad the repo-owner and the repo-name as command line")
+  }
+
+  var options = {
     url: 'https://api.github.com/repos/' + repoOwner + '/' + repoName + '/contributors',
     headers: {
       'User-Agent': 'request',
@@ -32,7 +38,7 @@ function downloadImageByURL(imageUrl, filePath){
          .pipe(fs.createWriteStream(filePath));
 }
 
-getRepoContributors("jquery", "jquery", function(err, result){
+getRepoContributors(function(err, result){
   //console.log("Errors: ", err);
   console.log("Downloading images...\n")
   for(i in result){
